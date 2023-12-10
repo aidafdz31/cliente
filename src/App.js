@@ -4,18 +4,23 @@ import "./App.css";
 import CreatePaciente from "./components/createPaciente";
 import PacientesList from "./components/List";
 import EditPacientes from "./components/edit";
-
+import Menu from "./pages/Menu";
 import { Route,Routes } from "react-router-dom";
+import Footer from "./pages/Footer";
+import Home from "./pages/Home";
 function App() {
   
   return (
   <>
+ <Menu/>
   <Routes>
-    
+            <Route exact path="/" element={<Home/>}></Route>
             <Route exact path="/create-paciente" element={<CreatePaciente />} />
-            <Route exact path="/edit-paciente/:DNI" element={<EditPacientes/>} />
-            <Route exact path="/paciente-list" element={<PacientesList />} />
+            <Route exact path="pacientes/edit/:DNI" element={<EditPacientes/>} />
+            <Route exact path="/pacientes" element={<PacientesList />} />
           </Routes>
+
+          <Footer/>
     
     
   </>

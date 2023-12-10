@@ -2,36 +2,49 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 function PacientesList(props) {
-  const [pacientes, setPacientes] =useState({firstName: "",
-  surname: "",
-  direction: "",
-  localidad:"",
-  cp:"",
-  telf:"",
-  DNI:""});
-  const deletePacientes = (DNI) => {
-    axios
-      .delete("http://localhost:3000/pacientes/:DNI")
-      .then(() => {
-        console.log("Data successfully deleted!");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const [pacientes, setPacientes] =useState([]);
+  const deletePacientes = async (dni)   => {
+    try {
+      await axios.delete(`http://localhost:3000/pacientes/${dni}`)
+
+      setPacientes(pacientes.filter(paciente =>paciente.DNI !=dni))
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+    
+      };
+     
+  
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/pacientes")
-      .then((res) => {
-        setPacientes(res.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [pacientes]);
+   const fechData =async ()=>{
+    try {
+     const respons = await axios.get('http://localhost:3000/pacientes')
+     console.log ( respons.data.message)
+     setPacientes(respons.data.message)
+    }
+    catch(err){
+      console.log(err)
+
+    }
+
+   }
+   fechData();
+  }, []);
   return (
     <div>
-      <table className="table">
+
+
+
+
+
+      {/* {pacientes?.map((paciente, index) => (
+        <div key ={index}>
+          <h2> {paciente.firstName} </h2>
+           </div>
+      ))} */}
+       <table className="table">
        
           <tr>
             <th >nombre</th>
@@ -44,10 +57,11 @@ function PacientesList(props) {
           </tr>
       
         
-          {this.pacientes.map((paciente, index) => {
+          {
+          pacientes.map((paciente, index) => {
             return (
               <tr key={index}>
-                <th >{paciente.DNI}</th>
+                
                 <td>{paciente.firstName}</td>
                 <td>{paciente.surname}</td>
                 <td>{paciente.direction}</td>
@@ -58,11 +72,15 @@ function PacientesList(props) {
                 <td>
                   <Link
                     className="btn btn-primary btn-sm me-2"
-                    to={"/edit-pacient/:DNI"}
+                    to={"/edit/:DNI"}
                   >
                     Edit
                   </Link>
-                  <button
+                  
+                 
+                </td>
+                <td>
+                <button
                     className="btn btn-danger btn-sm"
                     onClick={() => deletePacientes(paciente.DNI)}
                   >
@@ -73,7 +91,7 @@ function PacientesList(props) {
             );
           })}
       
-      </table>
+      </table> 
     </div>
   );
 }

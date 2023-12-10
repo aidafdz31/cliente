@@ -1,6 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+const editPacientes = async ()   => {
+  try {
+    await axios.post(`http://localhost:3000/pacientes`)
+
+    setPacientes(pacientes.filter(paciente =>paciente.DNI !=dni))
+    
+  } catch (error) {
+    console.log(error)
+    
+  }
+  
+    };
 function EditPacientes() {
   const [pacientesForm, setPacientesForm] = useState({
     firstName: "",
