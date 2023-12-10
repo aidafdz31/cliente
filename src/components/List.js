@@ -5,9 +5,12 @@ function PacientesList(props) {
   const [pacientes, setPacientes] =useState([]);
   const deletePacientes = async (dni)   => {
     try {
+      console.log(dni)
+      if(dni > 1){ 
       await axios.delete(`http://localhost:3000/pacientes/${dni}`)
 
       setPacientes(pacientes.filter(paciente =>paciente.DNI !=dni))
+    }
       
     } catch (error) {
       console.log(error)
@@ -72,8 +75,8 @@ function PacientesList(props) {
                 <td>
                   <Link
                     className="btn btn-primary btn-sm me-2"
-                    to={"/edit/:DNI"}
-                  >
+                    to={`edit/${paciente.DNI}`}>
+                  
                     Edit
                   </Link>
                   

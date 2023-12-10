@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 function CreatePaciente() {
+  const [mostrar, setMostrar] = useState(false)
   const [pacientesForm, setPacientesForm] = useState({
 firstName: "",
     surname: "",
@@ -10,7 +11,7 @@ firstName: "",
     telf:"",
     DNI:""
   });
-  useEffect(() => {
+  /*useEffect(() => {
     console.log("Loading...");
     const fechData = async(firstName,surname,direction,localidad,cp,telf,DNI) => {
       try {
@@ -33,15 +34,32 @@ firstName: "",
   
      };
      fechData();
-    }, []);
+    }, []);*/
   const inputsHandler = (e) => {
     setPacientesForm((prevNext) => ({
       ...prevNext,
       [e.target.name]: e.target.value,
     }));
   };
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
+    
     e.preventDefault();
+    try {
+
+     const response = await axios.post('http://localhost:3000/pacientes', pacientesForm);
+     console.log(response)
+     if(response.data.message  =='ok' ) {
+      setMostrar(true)
+
+     }else {
+      setMostrar(false)
+     }
+      
+    } catch (error) {
+      console.log(error)
+    }
+    console.log(pacientesForm);
+     }
     
   
 
@@ -55,7 +73,7 @@ firstName: "",
             <input
               type="text"
               className="form-control"
-              name="name"
+              name="firstName"
               id="name"
               value={pacientesForm.firstName}
               onChange={inputsHandler}
@@ -121,8 +139,9 @@ firstName: "",
             <input
               type="text"
               className="form-control"
-              name="direction"
+              name="DNI"
               id="direction"
+              required
               value={pacientesForm.DNI}
               onChange={inputsHandler}
             />
@@ -133,8 +152,10 @@ firstName: "",
             </button>
           </div>
         </form>
-      </div>
+        
+      </div>{mostrar && <h2 className="apto">Tu formulario fue creado correctamete</h2> }
+      
     </div>
   );
-} }
+} 
 export default CreatePaciente;

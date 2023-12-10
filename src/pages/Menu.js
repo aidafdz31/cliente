@@ -13,13 +13,18 @@ export default function Menu() {
  "active" : ""}>
  Lista
  </NavLink>
- <NavLink to="pacientes/edit/:DNI" className={({isActive}) => isActive ?
- "active" : ""}>
- Editar
- </NavLink>
+ 
  <NavLink to="/create" className={({isActive}) => isActive ?
  "active" : ""}>
  Crear
+ </NavLink>
+ <NavLink to="/search" className={({isActive}) => isActive ?
+ "active" : ""}>
+ Buscar
+ </NavLink>
+ <NavLink to="/log" className={({isActive}) => isActive ?
+ "active" : ""}>
+ Log
  </NavLink>
  </div>
  </nav>

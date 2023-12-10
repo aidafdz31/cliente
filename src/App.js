@@ -8,6 +8,7 @@ import Menu from "./pages/Menu";
 import { Route,Routes } from "react-router-dom";
 import Footer from "./pages/Footer";
 import Home from "./pages/Home";
+import { Buscar } from "./components/search";
 function App() {
   
   return (
@@ -15,7 +16,8 @@ function App() {
  <Menu/>
   <Routes>
             <Route exact path="/" element={<Home/>}></Route>
-            <Route exact path="/create-paciente" element={<CreatePaciente />} />
+            <Route exact path="/search" element={<Buscar/>}></Route>
+            <Route exact path="/create" element={<CreatePaciente />} />
             <Route exact path="pacientes/edit/:DNI" element={<EditPacientes/>} />
             <Route exact path="/pacientes" element={<PacientesList />} />
           </Routes>

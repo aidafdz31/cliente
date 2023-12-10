@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const editPacientes = async ()   => {
+/*const editPacientes = async ()   => {
   try {
     await axios.post(`http://localhost:3000/pacientes`)
 
@@ -13,69 +13,63 @@ const editPacientes = async ()   => {
     
   }
   
-    };
+    };*/
 function EditPacientes() {
-  const [pacientesForm, setPacientesForm] = useState({
-    firstName: "",
-            surname: "",
-            direction: "",
-            localidad:"",
-            cp:"",
-            telf:"",
-            DNI:"",
-  });
+  const [pacientesForm, setPacientesForm] = useState({});
   let params = useParams();
-  let navigate = useNavigate();
+ 
+  //let navigate = useNavigate();
   const inputsHandler = (e) => {
     setPacientesForm((prevNext) => ({
       ...prevNext,
       [e.target.name]: e.target.value,
     }));
   };
-  const onUpdate = (e) => {
+  const onUpdate = async (e) => {
     e.preventDefault();
-    axios
-      .put("http://localhost:3001/pacientes/:DNI" + params.DNI, {
-            firstName: pacientesForm.firstName,
-            surname: pacientesForm.surname,
-            direction: pacientesForm.direction,
-            localidad:pacientesForm.localidad,
-            cp:pacientesForm.cp,
-            telf:pacientesForm.telf,
-            DNI:pacientesForm.DNI,
-        
-      })
-      .then((res) => {
-        console.log({ status: res.status });
-        navigate("/pacientes-List");
-      });
-  };
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/pacientes" + params.DNI)
-      .then((res) => {
-        setPacientesForm({
-          firstName: res.data.data.firstName,
-          surname: res.data.data.surname,
-         direction: res.data.data.direction,
-            localidad:res.data.data.localidad,
-            cp:res.data.data.cp,
-            telf:res.data.data.telf,
-            DNI:res.data.data.DNI,
-         
-        });
-      });
-  }, []);
+    try {
+      const respons = await axios.put(`http://localhost:3000/pacientes/${params.DNI}`, pacientesForm);
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+   
+
+    }
+    
+
+    useEffect(() => {
+      const fechData =async ()=>{
+       try {
+        const respons = await axios.get(`http://localhost:3000/pacientes/${params.DNI}`)
+
+        console.log ( respons.data.paciente[0])
+        setPacientesForm(respons.data.paciente[0])
+       // setPacientes(respons.data.message)
+       }
+       catch(err){
+         console.log(err)
+   
+       }
+   
+      }
+      fechData();
+     }, [params.DNI]);
+      
+     if (Object.keys(pacientesForm).length === 0) { return;   }//Or any other loading state representation
   return (
+    
     <div>
-      <div className="form-wrapper">
+      {pacientesForm &&
+        <div className="form-wrapper">
         <form onSubmit={onUpdate}>
           <div className="mb-3">
             <label className="form-label">Name</label>
             <input
               type="text"
               className="form-control"
-              name="name"
+              name="firstName"
               id="name"
               value={pacientesForm.firstName}
               onChange={inputsHandler}
@@ -153,7 +147,7 @@ function EditPacientes() {
             </button>
           </div>
         </form>
-      </div>
+      </div> }
     </div>
   );
 }
