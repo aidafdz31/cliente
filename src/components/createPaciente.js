@@ -10,6 +10,30 @@ firstName: "",
     telf:"",
     DNI:""
   });
+  useEffect(() => {
+    console.log("Loading...");
+    const fechData = async(firstName,surname,direction,localidad,cp,telf,DNI) => {
+      try {
+       const {dataata} = await axios.post('http://localhost:3000/pacientes',
+       {
+        firstName,
+        surname,
+        direction,
+        localidad,
+        cp,
+        telf,
+        DNI
+
+       }
+       );
+    }catch(err){
+        console.log(err)
+  
+      }
+  
+     };
+     fechData();
+    }, []);
   const inputsHandler = (e) => {
     setPacientesForm((prevNext) => ({
       ...prevNext,
@@ -18,22 +42,10 @@ firstName: "",
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3000/pacientes/create-paciente", pacientesForm)
-      .then((res) => {
-        console.log(res.data);
-        setPacientesForm({
-            firstName: "",
-            surname: "",
-            direction: "",
-            localidad:"",
-            cp:"",
-            telf:"",
-            DNI:""
-        });
-      });
-  };
-  useEffect(() => {}, []);
+    
+  
+
+   
   return (
     <div>
       <div className="form-wrapper">
@@ -124,5 +136,5 @@ firstName: "",
       </div>
     </div>
   );
-}
+} }
 export default CreatePaciente;
